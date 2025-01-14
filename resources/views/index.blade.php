@@ -56,18 +56,20 @@
                                                 <a href="{{ route('plants.edit', $plant['id']) }}" class="round round-success">
                                                     {{ $plant['kode_plant'] }}
                                                 </a>
-                                            </td>                                            <td>
-                                                <h6>{{$plant['name']}}</h6><small class="text-muted">{{$plant['additional']}}</small></td>
-                                            <td><span class="label label-primary">{{$plant['type']}}</span></td>
+                                            </td>
+                                            <td>
+                                                <h6>{{ $plant['name'] }}</h6><small class="text-muted">{{ $plant['additional'] }}</small>
+                                            </td>
+                                            <td><span class="label label-primary">{{ $plant['type'] }}</span></td>
                                             <td>
                                                 @if ($plant['growth'])
-                                                    @foreach (json_decode($plant['growth'], true) as $growth)
+                                                    @foreach ($plant['growth'] as $growth)
                                                         {{ $growth['tanggal'] }} - {{ $growth['growth'] }}<br>
                                                     @endforeach
                                                 @else
                                                     -
                                                 @endif
-                                            </td>
+                                            </td>                                            
                                             <td class="d-flex">
                                                 <div class="mr-2">
                                                     <a href="{{route('plants.edit', $plant['id'])}}" class="fa-solid fa-file-pen text-primary"></a>

@@ -87,34 +87,37 @@ class PlantController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-{
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'type' => 'required|string',
-        'growth' => 'required|string',
-        'additional' => 'nullable|string',
-    ]);
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'type' => 'required|string',
+            'growth' => 'required|string',
+            'additional' => 'nullable|string',
+        ]);
+    
+        $plant = Plant::findOrFail($id);
+    
+        $growth = $plant->growth ?? [];
+    
+        $newGrowth = [
+            "tanggal" => date("d-m-Y"),
+            "growth" => $request->growth,
+        ];
+        $growth[] = $newGrowth;
+    
+        // Update data plant
+        $plant->update([
+            'name' => $request->name,
+            'type' => $request->type,
+            'additional' => $request->additional,
+            'growth' => $growth,
+        ]);
 
-    $plant = Plant::findOrFail($id);
+        return redirect()->route('plants.index')->with('success', 'Plant updated successfully!');
+    }
+    
 
-    $growth = json_decode($plant->growth, true) ?? [];
 
-    $newGrowth = [
-        "tanggal" => date("d-m-Y"),
-        "growth" => $request->growth,
-    ];
-    $growth[] = $newGrowth;
-
-    // Update data plant
-    $plant->update([
-        'name' => $request->name,
-        'type' => $request->type,
-        'additional' => $request->additional,
-        'growth' => json_encode($growth),
-    ]);
-
-    return redirect()->route('plants.index')->with('success', 'Plant updated successfully!');
-}
 
 
     /**
